@@ -5,6 +5,7 @@ import cn.edu.bupt.booksystem.exception.NotFoundException;
 import cn.edu.bupt.booksystem.mapper.BookMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -43,6 +44,7 @@ public class BookController {
     @Operation(summary = "获取图书", description = "获取图书")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Cacheable(value = "books", key = "#id")
     public Book getBook(@PathVariable int id) {
         Book book = bookMapper.selectById(id);
         if (book == null) {
